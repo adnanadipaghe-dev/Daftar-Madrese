@@ -1,40 +1,26 @@
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+}
 
-name: Build Daftar Madrese APK
+android {
+    namespace = "ir.daftar.madrese"
+    compileSdk = 35
 
-on:
-  workflow_dispatch:
-  push:
-    branches: [main]
+    defaultConfig {
+        applicationId = "ir.daftar.madrese"
+        minSdk = 23
+        targetSdk = 35
+        versionCode = 1
+        versionName = "1.0"
+    }
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 
-      - name: Extract Android project
-        run: |
-          unzip -q DaftarMadrese-Android-Project.zip -d /tmp/daftar
-          cp -R /tmp/daftar/DaftarMadrese-Android/. .
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
-
-      - name: Build APK
-        run: gradle assembleDebug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: Daftar-Madrese-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
-          
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
